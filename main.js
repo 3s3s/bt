@@ -19,8 +19,11 @@ $(async () => {
 
         RedrawTable (GLOBAL);
 
+        let needSleepCounter = 0
         while (true)
         {
+            needSleepCounter++;
+
             let array = new Array(GLOBAL.cols*GLOBAL.rows).fill(0);
             let counter = 0;
             for (let i=1; i<1000; i++)
@@ -36,6 +39,14 @@ $(async () => {
                 array[X+Y*GLOBAL.cols] = 1;
             }
 
+            if (needSleepCounter > 100)
+            {
+                clearTable(GLOBAL)
+                fillTable(GLOBAL, array)
+                $("#countText").val(counter)
+                await sleep();
+                needSleepCounter = 0
+            }
 
             if (counter > GLOBAL.count - 2)
             {
